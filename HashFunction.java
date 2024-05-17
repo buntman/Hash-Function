@@ -24,14 +24,29 @@ public class HashFunction {
          return key;
     }
 
+    public char digitSelection(String asciiValues) {
+        return asciiValues.charAt(0);
+    }
+
+    public char midSquare(String asciiValues) {
+         int left = 0;
+         int right = asciiValues.length() - 1;
+         int middle = (left + right) / 2;
+         return asciiValues.charAt(middle);
+    }
+
     public static void main(String[] args) {
         HashFunction user = new HashFunction();
-        String input = "aba";
+        String input = "ranmie";
         String value = user.wordToAscii(input);
         System.out.println("ASCII value: " + value);
         int fold = user.foldingAdding(value);
         System.out.println("Folding and Adding: " + fold);
         int modulo = user.moduloFunction(value);
         System.out.println("Modulo: " + modulo);
+        char digit = user.digitSelection(value);
+        System.out.println("Digit: " + digit);
+        char mid = user.midSquare(value);
+        System.out.println("Midsquare: " + mid);
     }
 }
