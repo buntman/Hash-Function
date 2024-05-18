@@ -24,7 +24,7 @@ public class HashFunction {
     }
     
     public int moduloFunction(String asciiValues) {
-         int key = 0;
+         int key;
          long values = Long.parseLong(asciiValues);
          long dummy = (values % 47);
          key = (int) dummy;
@@ -48,6 +48,23 @@ public class HashFunction {
          }
          return key;
     }
+
+    public int linearProbing(int index) {
+         while (table[index] != null) {
+             index+=1; //move one step until there's an available slot
+         }
+         return index;
+    }
+
+    public int secondHashing(String asciiValues, int index) {
+        while (table[index] != null) {
+            long values = Long.parseLong(asciiValues);
+            long dummy = (values % 43);
+            index = (int) dummy;
+        }
+        return index;
+    }
+
 
     public void addElements() {
          Scanner scan = new Scanner(System.in);
