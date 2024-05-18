@@ -15,13 +15,17 @@ public class HashFunction {
         for (int i = 0; i < asciiValues.length(); i++) {
             key += Character.getNumericValue(asciiValues.charAt(i));
         }
+        if(key >= 50 && key <= 99) { //two digit addition
+           key =  key / 10 + key % 10; //if it is outside of range, just add the numbers
+        }
         return key;
     }
     
     public int moduloFunction(String asciiValues) {
          int key = 0;
-         int values = Integer.parseInt(asciiValues);
-         key = values % 47;
+         long values = Long.parseLong(asciiValues);
+         long dummy = (values % 47);
+         key = (int) dummy;
          return key;
     }
 
@@ -38,9 +42,7 @@ public class HashFunction {
          int key = Integer.parseInt(String.valueOf(x));
          key *= key;
          if(key >= 50) {  //if the squared value is outside of range, get the left side value
-             String k = Integer.toString(key);
-             char val = k.charAt(0);
-             key = Integer.parseInt(String.valueOf(val));
+             key = key / 10;
          }
          return key;
     }
@@ -60,18 +62,22 @@ public class HashFunction {
 
     public static void main(String[] args) {
         HashFunction user = new HashFunction();
-        String input = "ara";
+        String input = "Carla";
         String value = user.wordToAscii(input);
         System.out.println("ASCII: " + value);
 //        user.addElements(input);
 //        user.printTable();
 
-
+        int fold = user.foldingAdding(value);
+        System.out.println("Folding and Adding Key: " + fold);
 
         int digit = user.digitSelection(value);
-        System.out.println("Digit key: " + digit);
+        System.out.println("Digit Key: " + digit);
 
         int mid = user.midSquare(value);
-        System.out.println("Midsquare: " + mid);
+        System.out.println("Midsquare Key: " + mid);
+
+        int modulo = user.moduloFunction(value);
+        System.out.println("Modulo Key: " + modulo);
     }
 }
