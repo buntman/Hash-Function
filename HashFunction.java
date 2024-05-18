@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class HashFunction {
     String [] table = new String[50];
 
@@ -47,11 +49,37 @@ public class HashFunction {
          return key;
     }
 
-    public void addElements(String word) {
-         String asciiVal = wordToAscii(word);
+    public void addElements() {
+         Scanner scan = new Scanner(System.in);
+         System.out.println("Hash Function Method");
+         System.out.println("1. Add and Fold\n2. Modulo Function\n3. Digit Selection\n4. Midsquare\n");
+        System.out.print("Enter hash function choice: ");
+         int choice = scan.nextInt();
 
-         int index = foldingAdding(asciiVal);
-         table[index] = word;
+        System.out.print("How many words do you want to enter? (1-50 only): ");
+        int numWords = scan.nextInt();
+
+
+        for (int i = 0; i < numWords; i++) {
+            System.out.print("Entry #: ");
+            String word = scan.next();
+            String asciiValues = wordToAscii(word);
+
+            if(choice == 1) {
+                int index = foldingAdding(asciiValues);
+                table[index] = word;
+            } else if(choice == 2) {
+                int index = moduloFunction(asciiValues);
+                table[index] = word;
+            } else if (choice == 3) {
+                int index = digitSelection(asciiValues);
+                table[index] = word;
+            } else if(choice == 4) {
+                int index = midSquare(asciiValues);
+                table[index] = word;
+            }
+        }
+        printTable();
     }
 
     public void printTable() {
@@ -66,9 +94,7 @@ public class HashFunction {
 
     public static void main(String[] args) {
         HashFunction user = new HashFunction();
-        String input = "Carla";
-        String value = user.wordToAscii(input);
-        user.addElements(input);
-        user.printTable();
+
+        user.addElements();
     }
 }
