@@ -56,7 +56,11 @@ public class HashFunction {
 
     public void printTable() {
         for (int i = 0; i < table.length; i++) {
-            System.out.println(i + " " + table[i]);
+            if(table[i] == null) {
+                System.out.println(i);
+            } else {
+                System.out.println(table[i]);
+            }
         }
     }
 
@@ -64,20 +68,7 @@ public class HashFunction {
         HashFunction user = new HashFunction();
         String input = "Carla";
         String value = user.wordToAscii(input);
-        System.out.println("ASCII: " + value);
-//        user.addElements(input);
-//        user.printTable();
-
-        int fold = user.foldingAdding(value);
-        System.out.println("Folding and Adding Key: " + fold);
-
-        int digit = user.digitSelection(value);
-        System.out.println("Digit Key: " + digit);
-
-        int mid = user.midSquare(value);
-        System.out.println("Midsquare Key: " + mid);
-
-        int modulo = user.moduloFunction(value);
-        System.out.println("Modulo Key: " + modulo);
+        user.addElements(input);
+        user.printTable();
     }
 }
