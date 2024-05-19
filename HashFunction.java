@@ -65,6 +65,18 @@ public class HashFunction {
         return index;
     }
 
+    public int collisionMethod(String asciiValues, int index, int resolution) {
+         if(table[index] == null) {
+             return index; //no resolution, just return the original index
+         }
+        if(table[index] != null && resolution == 2) {
+            index = linearProbing(index);
+        } else if(table[index] != null && resolution == 3) {
+            index = secondHashing(asciiValues, index);
+        }
+        return index;
+    }
+
 
     public void addElements() {
          Scanner scan = new Scanner(System.in);
@@ -72,6 +84,13 @@ public class HashFunction {
          System.out.println("1. Add and Fold\n2. Modulo Function\n3. Digit Selection\n4. Midsquare\n");
         System.out.print("Enter hash function choice: ");
          int choice = scan.nextInt();
+
+        System.out.println();
+
+        System.out.println("Collision Resolution Method");
+        System.out.println("1. Bucket Chaining\n2. Linear Probing\n3. Second Hash Function\n");
+        System.out.print("Enter Collision Resolution: ");
+        int resolution = scan.nextInt();
 
         System.out.print("How many words do you want to enter? (1-50 only): ");
         int numWords = scan.nextInt();
@@ -84,16 +103,20 @@ public class HashFunction {
 
             if(choice == 1) {
                 int index = foldingAdding(asciiValues);
-                table[index] = word;
+                int key = collisionMethod(asciiValues, index, resolution);
+                table[key] = word;
             } else if(choice == 2) {
                 int index = moduloFunction(asciiValues);
-                table[index] = word;
+                int key = collisionMethod(asciiValues, index, resolution);
+                table[key] = word;
             } else if (choice == 3) {
                 int index = digitSelection(asciiValues);
-                table[index] = word;
+                int key = collisionMethod(asciiValues, index, resolution);
+                table[key] = word;
             } else if(choice == 4) {
                 int index = midSquare(asciiValues);
-                table[index] = word;
+                int key = collisionMethod(asciiValues, index, resolution);
+                table[key] = word;
             }
         }
         printTable();
