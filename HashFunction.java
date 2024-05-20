@@ -97,45 +97,36 @@ public class HashFunction {
         }
     }
 
-    public void insertWords(String word, String asciiValues, int hashChoice, int resolution) {
+    public void insertWords(int hashChoice, String word, String asciiValues, int resolution) {
          if(hashChoice == 1) {
-             int index = foldingAdding(asciiValues);
-             if(table[index] == null) {
-                 table[index] = new Node(word);
-             } else {
-                 collisionMethod(word, asciiValues, index, resolution);
-             }
+             hashChoice(foldingAdding(asciiValues), word, asciiValues, resolution);
          } else if(hashChoice == 2) {
-             int index = moduloFunction(asciiValues);
-             if(table[index] == null) {
-                 table[index] = new Node(word);
-             } else {
-                 collisionMethod(word, asciiValues, index, resolution);
-             }
+             hashChoice(moduloFunction(asciiValues), word, asciiValues, resolution);
          } else if(hashChoice == 3) {
-             int index = digitSelection(asciiValues);
-             if(table[index] == null) {
-                 table[index] = new Node(word);
-             } else {
-                 collisionMethod(word, asciiValues, index, resolution);
-             }
+             hashChoice(digitSelection(asciiValues), word, asciiValues, resolution);
          } else if(hashChoice == 4) {
-             int index = midSquare(asciiValues);
-             if(table[index] == null) {
-                 table[index] = new Node(word);
-             } else {
-                 collisionMethod(word, asciiValues, index, resolution);
-             }
+             hashChoice(midSquare(asciiValues), word, asciiValues, resolution);
          }
     }
 
 
-    public void addElements() {
+    public void hashChoice(int index, String word, String ascii, int resolution) {
+         if(table[index] == null) {
+             table[index] = new Node(word);
+         } else {
+             collisionMethod(word, ascii, index, resolution);
+         }
+    }
+
+
+    public void displayMenu() {
          Scanner scan = new Scanner(System.in);
          System.out.println("Hash Function Method");
          System.out.println("1. Add and Fold\n2. Modulo Function\n3. Digit Selection\n4. Midsquare\n");
         System.out.print("Enter hash function choice: ");
          int choice = scan.nextInt();
+
+
 
         System.out.println();
 
@@ -153,7 +144,7 @@ public class HashFunction {
             System.out.print("Word #" + (i + 1) + ": ");
             String word = scan.nextLine();
             String asciiValues = wordToAscii(word);
-            insertWords(word, asciiValues, choice, resolution);
+            insertWords(choice, word, asciiValues, resolution);
         }
         printTable();
     }
@@ -170,9 +161,11 @@ public class HashFunction {
         }
     }
 
+
+
     public static void main(String[] args) {
         HashFunction user = new HashFunction();
 
-        user.addElements();
+        user.displayMenu();
     }
 }
