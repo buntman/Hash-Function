@@ -1,7 +1,19 @@
 import java.util.Scanner;
 
 public class HashFunction {
-    String [] table = new String[50];
+
+    static class Node {
+        String word;
+        Node next;
+
+        Node(String word) {
+            this.word = word;
+            this.next = null;
+        }
+
+    }
+    Node [] table = new Node[50];
+
 
 
      public String wordToAscii(String word) {
@@ -46,6 +58,7 @@ public class HashFunction {
          return key;
     }
 
+
     public int linearProbing(int index) {
          while (table[index] != null) {
              index+=1; //move one step until there's an available slot
@@ -64,18 +77,57 @@ public class HashFunction {
 
 
 
-    public int collisionMethod(String asciiValues, int index, int resolution) {
+    public void collisionMethod(String word, String asciiValues, int index, int resolution) {
          if(table[index] == null) {
-             return index; //no resolution, just return the original index
+             return; //no resolution, just return the original index
          }
-         if(table[index] != null && resolution == 2) {
+         if(resolution == 1) {
+             Node value = table[index];
+             while (value.next != null) {
+                 value = value.next;
+             }
+             value.next = new Node(word);
+         }
+         else if(table[index] != null && resolution == 2) {
             index = linearProbing(index);
+            table[index] = new Node(word);
         } else if(table[index] != null && resolution == 3) {
             index = secondHashing(asciiValues, index);
+            table[index] = new Node(word);
         }
-        return index;
     }
 
+    public void insertWords(String word, String asciiValues, int hashChoice, int resolution) {
+         if(hashChoice == 1) {
+             int index = foldingAdding(asciiValues);
+             if(table[index] == null) {
+                 table[index] = new Node(word);
+             } else {
+                 collisionMethod(word, asciiValues, index, resolution);
+             }
+         } else if(hashChoice == 2) {
+             int index = moduloFunction(asciiValues);
+             if(table[index] == null) {
+                 table[index] = new Node(word);
+             } else {
+                 collisionMethod(word, asciiValues, index, resolution);
+             }
+         } else if(hashChoice == 3) {
+             int index = digitSelection(asciiValues);
+             if(table[index] == null) {
+                 table[index] = new Node(word);
+             } else {
+                 collisionMethod(word, asciiValues, index, resolution);
+             }
+         } else if(hashChoice == 4) {
+             int index = midSquare(asciiValues);
+             if(table[index] == null) {
+                 table[index] = new Node(word);
+             } else {
+                 collisionMethod(word, asciiValues, index, resolution);
+             }
+         }
+    }
 
 
     public void addElements() {
@@ -98,37 +150,21 @@ public class HashFunction {
 
 
         for (int i = 0; i < numWords; i++) {
-            System.out.print("Entry #: ");
+            System.out.print("Word #" + (i + 1) + ": ");
             String word = scan.nextLine();
             String asciiValues = wordToAscii(word);
-
-            if(choice == 1) {
-                int index = foldingAdding(asciiValues);
-                int key = collisionMethod(asciiValues, index, resolution);
-                table[key] = word;
-            } else if(choice == 2) {
-                int index = moduloFunction(asciiValues);
-                int key = collisionMethod(asciiValues, index, resolution);
-                table[key] = word;
-            } else if (choice == 3) {
-                int index = digitSelection(asciiValues);
-                int key = collisionMethod(asciiValues, index, resolution);
-                table[key] = word;
-            } else if(choice == 4) {
-                int index = midSquare(asciiValues);
-                int key = collisionMethod(asciiValues, index, resolution);
-                table[key] = word;
-            }
+            insertWords(word, asciiValues, choice, resolution);
         }
         printTable();
     }
 
     public void printTable() {
         for (int i = 0; i < table.length; i++) {
-            if(table[i] == null) {
-                System.out.println(i);
-            } else {
-                System.out.println(table[i]);
+            System.out.printf("%02d:%n", i);
+            Node current = table[i];
+            while (current != null) {
+                System.out.print(current.word + " ");
+                current = current.next;
             }
         }
     }
