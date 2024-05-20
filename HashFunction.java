@@ -68,9 +68,14 @@ public class HashFunction {
 
     public int secondHashing(String asciiValues, int index) {
          int secondPrime = 43;
+        long values = Long.parseLong(asciiValues);
         while (table[index] != null) {
-            long values = Long.parseLong(asciiValues);
             index = (int) (values % secondPrime);
+            secondPrime -= 2; //move to the next prime
+
+            if(secondPrime <= 0) {
+                secondPrime = 43; // reset to the alternative prime
+            }
         }
         return index;
     }
