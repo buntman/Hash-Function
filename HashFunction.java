@@ -160,12 +160,13 @@ public class HashFunction {
 
     public void printTable() {
         for (int i = 0; i < table.length; i++) {
-            System.out.printf("%02d:%n", i);
             Node current = table[i];
+            System.out.printf("%02d:", i);
             while (current != null) {
-                System.out.print(current.word + " ");
+                System.out.print(" -> " + current.word);
                 current = current.next;
             }
+            System.out.println();
         }
     }
 
