@@ -3,8 +3,10 @@ import java.util.Scanner;
 public class HashFunction {
     String [] table = new String[50];
 
+
      public String wordToAscii(String word) {
         StringBuilder asciiValues = new StringBuilder();
+        word = word.replaceAll("\\s+","");
         for (int i = 0; i < word.length(); i++) {
             char ch = word.charAt(i);
             asciiValues.append((int) ch);
@@ -24,11 +26,9 @@ public class HashFunction {
     }
     
     public int moduloFunction(String asciiValues) {
-         int key;
+         int prime = 47;
          long values = Long.parseLong(asciiValues);
-         long dummy = (values % 47);
-         key = (int) dummy;
-         return key;
+         return (int) (values % prime);
     }
 
     public int digitSelection(String asciiValues) { //First digit is the key
@@ -37,11 +37,8 @@ public class HashFunction {
     }
 
     public int midSquare(String asciiValues) {
-         int left = 0;
-         int right = asciiValues.length() - 1;
-         int middle = (left + right) / 2;
-         char x = asciiValues.charAt(middle);
-         int key = Integer.parseInt(String.valueOf(x));
+         int middle = (asciiValues.length() - 1) / 2;
+         int key = Integer.parseInt(String.valueOf(asciiValues.charAt(middle)));
          key *= key;
          if(key >= 50) {  //if the squared value is outside of range, get the left side value
              key = key / 10;
@@ -57,25 +54,28 @@ public class HashFunction {
     }
 
     public int secondHashing(String asciiValues, int index) {
+         int secondPrime = 43;
         while (table[index] != null) {
             long values = Long.parseLong(asciiValues);
-            long dummy = (values % 43);
-            index = (int) dummy;
+            index = (int) (values % secondPrime);
         }
         return index;
     }
+
+
 
     public int collisionMethod(String asciiValues, int index, int resolution) {
          if(table[index] == null) {
              return index; //no resolution, just return the original index
          }
-        if(table[index] != null && resolution == 2) {
+         if(table[index] != null && resolution == 2) {
             index = linearProbing(index);
         } else if(table[index] != null && resolution == 3) {
             index = secondHashing(asciiValues, index);
         }
         return index;
     }
+
 
 
     public void addElements() {
@@ -94,11 +94,12 @@ public class HashFunction {
 
         System.out.print("How many words do you want to enter? (1-50 only): ");
         int numWords = scan.nextInt();
+        scan.nextLine();
 
 
         for (int i = 0; i < numWords; i++) {
             System.out.print("Entry #: ");
-            String word = scan.next();
+            String word = scan.nextLine();
             String asciiValues = wordToAscii(word);
 
             if(choice == 1) {
