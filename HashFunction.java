@@ -61,7 +61,7 @@ public class HashFunction {
 
     public int linearProbing(int index) {
          while (table[index] != null) {
-             index+=1; //move one step until there's an available slot
+             index = (index + 1) % table.length; //move one step until there's an available slot
          }
          return index;
     }
@@ -71,12 +71,7 @@ public class HashFunction {
         long values = Long.parseLong(asciiValues);
         int index = (int) (values % secondPrime);
         while (table[index] != null) {
-            index = (int) (values % secondPrime);
-            secondPrime -= 2; //move to the next prime
-
-            if(secondPrime <= 0) {
-                secondPrime  = 43;
-            }
+            index = (index + 1) % table.length; //switch to linear probing
         }
         return index;
     }
