@@ -37,7 +37,7 @@ public class HashFunction {
         return key;
     }
     
-    public int moduloFunction(String asciiValues) {
+    public int moduloArithmetic(String asciiValues) {
          int prime = 47;
          long values = Long.parseLong(asciiValues);
          return (int) (values % prime);
@@ -66,18 +66,28 @@ public class HashFunction {
          return index;
     }
 
-    public int secondHashing(String asciiValues, int index) {
+    public int secondHashing(String asciiValues) {
          int secondPrime = 43;
         long values = Long.parseLong(asciiValues);
+        int index = (int) (values % secondPrime);
         while (table[index] != null) {
             index = (int) (values % secondPrime);
             secondPrime -= 2; //move to the next prime
 
             if(secondPrime <= 0) {
-                secondPrime = 43; // reset to the alternative prime
+                secondPrime  = 43;
             }
         }
         return index;
+    }
+
+
+    public void bucketChaining(int index, String word) {
+        Node value = table[index];
+        while (value.next != null) {
+            value = value.next;
+        }
+        value.next = new Node(word);
     }
 
 
@@ -87,17 +97,13 @@ public class HashFunction {
              return; //no resolution, just return the original index
          }
          if(resolution == 1) {
-             Node value = table[index];
-             while (value.next != null) {
-                 value = value.next;
-             }
-             value.next = new Node(word);
+             bucketChaining(index, word);
          }
-         else if(table[index] != null && resolution == 2) {
+         else if(resolution == 2) {
             index = linearProbing(index);
             table[index] = new Node(word);
-        } else if(table[index] != null && resolution == 3) {
-            index = secondHashing(asciiValues, index);
+        } else if(resolution == 3) {
+            index = secondHashing(asciiValues);
             table[index] = new Node(word);
         }
     }
@@ -106,7 +112,7 @@ public class HashFunction {
          if(hashChoice == 1) {
              hashChoice(foldingAdding(asciiValues), word, asciiValues, resolution);
          } else if(hashChoice == 2) {
-             hashChoice(moduloFunction(asciiValues), word, asciiValues, resolution);
+             hashChoice(moduloArithmetic(asciiValues), word, asciiValues, resolution);
          } else if(hashChoice == 3) {
              hashChoice(digitSelection(asciiValues), word, asciiValues, resolution);
          } else if(hashChoice == 4) {
