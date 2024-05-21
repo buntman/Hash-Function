@@ -12,6 +12,8 @@ public class HashFunction {
         }
 
     }
+
+
     Node [] table = new Node[50];
 
 
@@ -44,8 +46,8 @@ public class HashFunction {
     }
 
     public int digitSelection(String asciiValues) { //First digit is the key
-         char x = asciiValues.charAt(0);
-         return Integer.parseInt(String.valueOf(x));
+         char digit = asciiValues.charAt(0);
+         return Integer.parseInt(String.valueOf(digit));
     }
 
     public int midSquare(String asciiValues) {
