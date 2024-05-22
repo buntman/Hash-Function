@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class HashFunction {
@@ -90,7 +91,7 @@ public class HashFunction {
 
 
     public void collisionMethod(String word, String asciiValues, int index, int resolution) {
-         if(table[index] == null) {
+        if(table[index] == null) {
              return; //no resolution, just return the original index
          }
          if(resolution == 1) {
@@ -127,24 +128,61 @@ public class HashFunction {
     }
 
 
+    public int validHashInput(Scanner scan) {
+        System.out.println("Hash Function Method");
+        System.out.println("1. Add and Fold\n2. Modulo Function\n3. Digit Selection\n4. Midsquare\n");
+        String prompt = "Enter Hash Function: ";
+         return getValidInput(scan, 1, 4, prompt);
+    }
+
+    public int validCollisionInput(Scanner scan) {
+        System.out.println("Collision Resolution Method");
+        System.out.println("1. Bucket Chaining\n2. Linear Probing\n3. Second Hash Function\n");
+        String prompt = "Enter Collision Resolution: ";
+        return getValidInput(scan, 1, 3, prompt);
+    }
+
+    public int validNumWordsInput(Scanner scan) {
+         String prompt = "How many words do you want to enter? (1-50): ";
+         return getValidInput(scan, 1, 50, prompt);
+    }
+
+    public int getValidInput(Scanner scan, int min, int max, String prompt) {
+         int input = 0;
+         boolean valid = false;
+
+         while (!valid) {
+             try {
+                 System.out.print(prompt);
+                 input = scan.nextInt();
+
+                 if (input >= min && input <= max) {
+                     valid = true;
+                 } else {
+                     System.out.println("Invalid Input. Please input a number between " + min + " and " + max);
+                     System.out.println();
+                 }
+             } catch (InputMismatchException e) {
+                 System.out.println("Invalid Input. Please enter a valid integer!");
+                 System.out.println();
+                 scan.next();
+             }
+         }
+         return input;
+    }
+
+
     public void displayMenu() {
          Scanner scan = new Scanner(System.in);
-         System.out.println("Hash Function Method");
-         System.out.println("1. Add and Fold\n2. Modulo Function\n3. Digit Selection\n4. Midsquare\n");
-        System.out.print("Enter hash function choice: ");
-         int choice = scan.nextInt();
+        int choice = validHashInput(scan);
 
 
 
         System.out.println();
 
-        System.out.println("Collision Resolution Method");
-        System.out.println("1. Bucket Chaining\n2. Linear Probing\n3. Second Hash Function\n");
-        System.out.print("Enter Collision Resolution: ");
-        int resolution = scan.nextInt();
+        int resolution = validCollisionInput(scan);
 
-        System.out.print("How many words do you want to enter? (1-50 only): ");
-        int numWords = scan.nextInt();
+        int numWords = validNumWordsInput(scan);
         scan.nextLine();
 
 
