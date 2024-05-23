@@ -34,8 +34,6 @@ public class HashFunction {
         }
         if(key >= 50 && key <= 99) { //two digit addition
            key =  key / 10 + key % 10; //if it is outside of range, just add the numbers
-        } else {
-            key = (key / 100) + ((key % 100) / 10) + (key % 10); //three digits
         }
         return key;
     }
