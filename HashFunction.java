@@ -6,12 +6,10 @@ public class HashFunction {
     static class Node {
         String word;
         Node next;
-
         Node(String word) {
             this.word = word;
             this.next = null;
         }
-
     }
 
 
@@ -171,6 +169,27 @@ public class HashFunction {
          return input;
     }
 
+    public String validWord(Scanner scan, String prompt) {
+         String word = "";
+         boolean valid = false;
+
+         while (!valid) {
+             try {
+                 System.out.print(prompt);
+                 word = scan.nextLine();
+
+                 if (word.matches("[a-zA-Z ]+")) {
+                     valid = true;
+                 } else {
+                     System.out.println("Invalid Input. Please enter a proper word!");
+                 }
+             } catch (Exception e) {
+                 System.out.println(e.getMessage());
+             }
+         }
+         return word;
+    }
+
 
     public void displayMenu() {
          Scanner scan = new Scanner(System.in);
@@ -187,8 +206,8 @@ public class HashFunction {
 
 
         for (int i = 0; i < numWords; i++) {
-            System.out.print("Word #" + (i + 1) + ": ");
-            String word = scan.nextLine();
+            String prompt = "Word #" + (i + 1) + ": ";
+            String word = validWord(scan, prompt);
             String asciiValues = wordToAscii(word);
             insertWords(choice, word, asciiValues, resolution);
         }
